@@ -1,0 +1,47 @@
+<%
+    # In our real-world application, this is not what we want. Instead, we should
+    # be checking to see if there is currently a user logged-in, and if there is,
+    # we should show her a form that will allow her to send a tweet. If there is no
+    # user logged-in, we should show the sign-in button.
+%>
+
+  <div class="container">
+
+    <% if current_user %>
+      
+      <script src="/js/tweet.js"></script>
+
+
+      
+        <form action="/tweet" method="post" class="tweet">
+          <input name="text" class='tweet_text' type="text" placeholder="your tweet...">
+          <input name="submit" type="submit">
+        </form>
+
+        <div id="spinner" style="display: none;"><img src="/images/loader.gif"></div>
+
+        <div id="tweets">
+
+          <% current_user.tweets.reverse.each do |tweet| %>
+            <p><%= tweet.text %></p>
+          <% end %>
+        
+        </div>
+
+        <div>
+          <p>
+            <strong>screen_name:</strong> <%= current_user.username %><br>
+            <strong>token:</strong> <%= current_user.oauth_token %><br>
+            <strong>secret:</strong> <%= current_user.oauth_secret %><br>
+          </p>
+          <p>
+            <button><a href="/sign_out">Sign Out</a></button>
+          </p>
+        </div>
+
+    <% else %>
+      <button><a href="/sign_in">Sign In with Twitter</a></button>
+    
+    <% end %>
+
+  </div>
